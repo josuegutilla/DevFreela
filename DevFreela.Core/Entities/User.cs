@@ -23,5 +23,16 @@
         public List<UserSkill> Skills { get; private set; }
         public List<Project> OwnedProjects { get; private set; }
         public List<Project> FreelanceProjects { get; private set; }
+
+        public void Cancel()
+        {
+            Active = false;
+        }
+
+        public void Update(string fullName, string email)
+        {
+            FullName = fullName;
+            Email = email;
+        }
     }
 }
