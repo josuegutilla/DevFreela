@@ -46,21 +46,21 @@ namespace DevFreela.API.Controllers
 
         //POST: api/projects
         [HttpPost]
-        public IActionResult Post([FromBody] NewProjectInputModel project)
+        public IActionResult Post([FromBody] NewProjectInputModel inputModel)
         {
-            if (project.Title.Length > 50)
+            if (inputModel.Title.Length > 50)
             {
                 return BadRequest();
             }
 
-            var projectId = _projectService.Create(project);
+            var projectId = _projectService.Create(inputModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = projectId }, project);
+            return CreatedAtAction(nameof(GetById), new { id = projectId }, inputModel);
         }
 
         // PUT: api/projects/1
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateProjectInputModel project)
+        public IActionResult Put(int id, [FromBody] UpdateProjectInputModel updateModel)
         {
             var p = _projectService.GetById(id);
 
@@ -73,7 +73,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest();
             }
 
-            _projectService.Update(id, project);
+            _projectService.Update(id, updateModel);
 
             return NoContent();
         }
@@ -83,6 +83,21 @@ namespace DevFreela.API.Controllers
         public IActionResult Delete(int id)
         {
             _projectService.Delete(id);
+
+            return NoContent();
+        }
+
+        [HttpPost("{id}/comments")]
+        public IActionResult PostComment(int id, [FromBody] CreateCommentInputModel inputModel)
+        {
+            var p = _projectService.GetById(id);
+
+            if (p == null)
+            {
+                return NotFound();
+            }
+
+            _projectService.CreateComment(id, inputModel);
 
             return NoContent();
         }
@@ -113,21 +128,6 @@ namespace DevFreela.API.Controllers
             }
 
             _projectService.Finish(id);
-
-            return NoContent();
-        }
-
-        [HttpPost("{id}/comments")]
-        public IActionResult PostComment(int id, [FromBody] CreateCommentInputModel comment)
-        {
-            var p = _projectService.GetById(id);
-
-            if (p == null)
-            {
-                return NotFound();
-            }
-
-            _projectService.CreateComment(id, comment);
 
             return NoContent();
         }
