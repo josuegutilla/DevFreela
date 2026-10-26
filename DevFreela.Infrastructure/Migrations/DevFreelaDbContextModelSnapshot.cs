@@ -43,7 +43,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Property<int>("IdClient")
                         .HasColumnType("integer");
 
-                    b.Property<int>("IdFreelancer")
+                    b.Property<int?>("IdFreelancer")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("StartedAt")
@@ -185,8 +185,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.HasOne("DevFreela.Core.Entities.User", "Freelancer")
                         .WithMany("FreelanceProjects")
                         .HasForeignKey("IdFreelancer")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Client");
 

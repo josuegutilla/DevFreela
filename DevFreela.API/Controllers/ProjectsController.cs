@@ -48,7 +48,7 @@ namespace DevFreela.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] NewProjectInputModel inputModel)
         {
-            if (inputModel.Title.Length > 50)
+            if (inputModel.Title.Length <= 5)
             {
                 return BadRequest();
             }
@@ -82,6 +82,11 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+
+            var project = _projectService.GetById(id);
+
+            if (project == null) return NotFound();
+
             _projectService.Delete(id);
 
             return NoContent();

@@ -5,7 +5,7 @@
         public Skill(string description)
         {
             Description = description;
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public string Description { get; private set; }

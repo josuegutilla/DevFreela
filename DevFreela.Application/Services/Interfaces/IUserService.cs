@@ -5,7 +5,7 @@ namespace DevFreela.Application.Services.Interfaces
 {
     public interface IUserService
     {
-        List<UserViewModel> GetAll(string query);
+        List<UserViewModel> GetAll(string? query);
         UserDetailsViewModel GetById(int id);
         int Create(CreateUserInputModel inputModel);
         void Update(int id, UserUpdateInputModel inputModel);

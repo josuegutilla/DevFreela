@@ -11,7 +11,7 @@ namespace DevFreela.Infrastructure.Persistence.Configurations
             builder.ToTable("projeto").HasKey(p => p.Id);
 
             // relacionamentos
-            builder.HasOne(p => p.Freelancer).WithMany(f => f.FreelanceProjects).HasForeignKey(p => p.IdFreelancer).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(p => p.Freelancer).WithMany(f => f.FreelanceProjects).HasForeignKey(p => p.IdFreelancer).OnDelete(DeleteBehavior.Restrict).IsRequired(false);
 
             builder.HasOne(p => p.Client).WithMany(c => c.OwnedProjects).HasForeignKey(p => p.IdClient).OnDelete(DeleteBehavior.Restrict);
         }

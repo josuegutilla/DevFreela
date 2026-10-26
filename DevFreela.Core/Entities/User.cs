@@ -7,7 +7,7 @@
             FullName = fullName;
             Email = email;
             BirthDate = birthDate;
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
             Active = true;
 
             Skills = new List<UserSkill>();

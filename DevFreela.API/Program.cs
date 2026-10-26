@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DevFreelaDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IProjectService, ProjectService>(); // scoped: a cada requisicao ao longo da aplicao ele volta com os valores padrao pra cada requicao;
-
+builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

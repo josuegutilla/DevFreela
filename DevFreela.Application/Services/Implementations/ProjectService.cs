@@ -3,6 +3,7 @@ using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
 using DevFreela.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Services.Implementations
 {
@@ -19,6 +20,7 @@ namespace DevFreela.Application.Services.Implementations
         {
             var project = new Project(inputModel.Title, inputModel.Description, inputModel.IdClient, inputModel.IdFreelancer, inputModel.TotalCost);
             _dbContext.Projects.Add(project);
+            _dbContext.SaveChanges();
 
             return project.Id;
         }
@@ -28,6 +30,7 @@ namespace DevFreela.Application.Services.Implementations
             var comment = new ProjectComment(inputModel.Content, inputModel.IdProject, inputModel.IdUser);
 
             _dbContext.ProjectComments.Add(comment);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
@@ -35,6 +38,7 @@ namespace DevFreela.Application.Services.Implementations
             var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
 
             project.Cancel();
+            _dbContext.SaveChanges();
         }
 
         public List<ProjectViewModel> GetAll(string query)
@@ -46,10 +50,16 @@ namespace DevFreela.Application.Services.Implementations
             return projetos;
         }
 
-        public ProjectDetailsViewModel GetById(int id)
+        public ProjectDetailsViewModel? GetById(int id)
         {
-            var projeto = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
-            var projetoDetailsViewModel = new ProjectDetailsViewModel(projeto.Title, projeto.Description, projeto.TotalCost, projeto.Status, projeto.StartedAt, projeto.FinishedAt);
+            var projeto = _dbContext.Projects
+                .Include(p => p.Client)
+                .Include(p => p.Freelancer)
+                .SingleOrDefault(p => p.Id == id);
+
+            if (projeto == null) return null;
+
+            var projetoDetailsViewModel = new ProjectDetailsViewModel(projeto.Title, projeto.Description, projeto.TotalCost, projeto.Status, projeto.StartedAt, projeto.FinishedAt, projeto.Client.FullName, projeto.Client.Email, projeto.Freelancer.FullName, projeto.Freelancer.Email);
 
             return projetoDetailsViewModel;
         }
@@ -58,18 +68,24 @@ namespace DevFreela.Application.Services.Implementations
         {
             var projeto = _dbContext.Projects.SingleOrDefault(p => p.Id == inputModel.Id);
             projeto.Update(projeto.Title, projeto.Description, projeto.TotalCost);
+
+            _dbContext.SaveChanges();
         }
 
         public void Start(int id)
         {
             var projeto = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
             projeto.Start();
+
+            _dbContext.SaveChanges();
         }
 
         public void Finish(int id)
         {
             var projeto = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
             projeto.Finish();
+
+            _dbContext.SaveChanges();
         }
     }
 }
