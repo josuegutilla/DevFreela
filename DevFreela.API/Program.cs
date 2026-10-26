@@ -1,6 +1,7 @@
 using DevFreela.Application.Services.Implementations;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,9 @@ builder.Services.AddOpenApi(options =>
 });
 
 // criando DI
-builder.Services.AddSingleton<DevFreelaDbContext>(); // singleton: ele mantem o valor dele ao longo da aplicacao com varias reqs chamando;
+var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
+builder.Services.AddDbContext<DevFreelaDbContext>(options => 
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IProjectService, ProjectService>(); // scoped: a cada requisicao ao longo da aplicao ele volta com os valores padrao pra cada requicao;
 
