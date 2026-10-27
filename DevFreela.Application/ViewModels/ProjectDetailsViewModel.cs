@@ -13,8 +13,8 @@ namespace DevFreela.Application.ViewModels
             DateTime? finishedAt,
             string clientFullName,
             string clientEmail,
-            string freelancerFullName,
-            string freelancerEmail
+            string? freelancerFullName,
+            string? freelancerEmail
             )
         {
             Title = title;
@@ -37,7 +37,7 @@ namespace DevFreela.Application.ViewModels
         public DateTime? FinishedAt { get; private set; }
         public string ClientFullName { get; private set; }
         public string ClientEmail { get; private set; }
-        public string FreelancerFullname { get; private set; }
-        public string FreelancerEmail { get; private set; }
+        public string? FreelancerFullname { get; private set; }
+        public string? FreelancerEmail { get; private set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DevFreela.Application.InputModels;
 using DevFreela.Application.Services.Interfaces;
-using DevFreela.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
@@ -62,18 +61,9 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateProjectInputModel updateModel)
         {
-            var p = _projectService.GetById(id);
+            var p = _projectService.Update(id, updateModel);
 
-            if (p == null)
-            {
-                return NotFound();
-            } 
-            else if (p.Description.Length < 200)
-            {
-                return BadRequest();
-            }
-
-            _projectService.Update(id, updateModel);
+            if (!p) return NotFound();
 
             return NoContent();
         }
@@ -82,12 +72,9 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var project = _projectService.Delete(id);
 
-            var project = _projectService.GetById(id);
-
-            if (project == null) return NotFound();
-
-            _projectService.Delete(id);
+            if (!project) return NotFound();
 
             return NoContent();
         }
@@ -95,14 +82,9 @@ namespace DevFreela.API.Controllers
         [HttpPost("{id}/comments")]
         public IActionResult PostComment(int id, [FromBody] CreateCommentInputModel inputModel)
         {
-            var p = _projectService.GetById(id);
+            var p = _projectService.CreateComment(id, inputModel);
 
-            if (p == null)
-            {
-                return NotFound();
-            }
-
-            _projectService.CreateComment(id, inputModel);
+            if (!p) return NotFound();
 
             return NoContent();
         }
@@ -110,14 +92,9 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/start")]
         public IActionResult Start(int id)
         {
-            var p = _projectService.GetById(id);
+            var p = _projectService.Start(id);
 
-            if (p == null)
-            {
-                return NotFound();
-            }
-
-            _projectService.Start(id);
+            if (!p) return NotFound();
 
             return NoContent();
         }
@@ -125,14 +102,9 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/finish")]
         public IActionResult Finish(int id)
         {
-            var p = _projectService.GetById(id);
+            var p = _projectService.Finish(id);
 
-            if (p == null)
-            {
-                return NotFound();
-            }
-
-            _projectService.Finish(id);
+            if (!p) return NotFound();
 
             return NoContent();
         }

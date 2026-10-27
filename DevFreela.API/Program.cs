@@ -1,6 +1,8 @@
+using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Services.Implementations;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,10 @@ builder.Services.AddDbContext<DevFreelaDbContext>(options =>
 
 builder.Services.AddScoped<IProjectService, ProjectService>(); // scoped: a cada requisicao ao longo da aplicao ele volta com os valores padrao pra cada requicao;
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddMediatR(typeof(CreateProjectCommand)); // implementando o mediatr para usar o padrao CQRS no projeto - commands e queries;
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
