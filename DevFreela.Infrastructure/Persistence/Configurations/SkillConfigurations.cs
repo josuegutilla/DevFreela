@@ -9,6 +9,8 @@ namespace DevFreela.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Skill> builder)
         {
             builder.ToTable("habilidade").HasKey(s => s.Id);
+
+            builder.Property(s => s.Active).HasDefaultValue(true);
         }
     }
 }

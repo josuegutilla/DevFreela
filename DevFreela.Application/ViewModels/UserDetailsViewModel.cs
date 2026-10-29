@@ -1,10 +1,8 @@
-﻿using DevFreela.Core.Entities;
-
-namespace DevFreela.Application.ViewModels
+﻿namespace DevFreela.Application.ViewModels
 {
     public class UserDetailsViewModel
     {
-        public UserDetailsViewModel(string fullName, string email, DateTime birthDate, bool active, List<UserSkill> skills)
+        public UserDetailsViewModel(string fullName, string email, DateTime birthDate, bool active, List<SkillViewModel> skills)
         {
             FullName = fullName;
             Email = email;
@@ -17,6 +15,6 @@ namespace DevFreela.Application.ViewModels
         public string Email { get; private set; }
         public DateTime BirthDate { get; private set; }
         public bool Active { get; private set; }
-        public List<UserSkill> Skills { get; private set; }
+        public List<SkillViewModel> Skills { get; private set; }
     }
 }

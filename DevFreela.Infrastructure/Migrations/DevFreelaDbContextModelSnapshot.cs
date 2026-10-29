@@ -106,6 +106,11 @@ namespace DevFreela.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -162,14 +167,11 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Property<int>("IdUser")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SkillId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdSkill");
 
-                    b.HasIndex("SkillId");
+                    b.HasIndex("IdUser");
 
                     b.ToTable("habilidade_usuario", (string)null);
                 });
@@ -213,16 +215,16 @@ namespace DevFreela.Infrastructure.Migrations
 
             modelBuilder.Entity("DevFreela.Core.Entities.UserSkill", b =>
                 {
-                    b.HasOne("DevFreela.Core.Entities.User", null)
-                        .WithMany("Skills")
+                    b.HasOne("DevFreela.Core.Entities.Skill", "Skill")
+                        .WithMany()
                         .HasForeignKey("IdSkill")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.Core.Entities.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("DevFreela.Core.Entities.User", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Skill");

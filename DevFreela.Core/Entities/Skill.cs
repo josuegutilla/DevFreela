@@ -6,9 +6,21 @@
         {
             Description = description;
             CreatedAt = DateTime.UtcNow;
+            Active = true;
         }
 
         public string Description { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public bool Active { get; private set; }
+
+        public void Update(string description)
+        {
+            Description = description;
+        }
+
+        public void Deactivate()
+        {
+            Active = false;
+        }
     }
 }

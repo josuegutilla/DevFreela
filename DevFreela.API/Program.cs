@@ -1,8 +1,7 @@
 using DevFreela.Application.Commands.CreateProject;
-using DevFreela.Application.Services.Implementations;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Domain.Repositories;
 using DevFreela.Infrastructure.Persistence;
-using MediatR;
+using DevFreela.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,11 +18,11 @@ var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
 builder.Services.AddDbContext<DevFreelaDbContext>(options => 
     options.UseNpgsql(connectionString));
 
-builder.Services.AddScoped<IProjectService, ProjectService>(); // scoped: a cada requisicao ao longo da aplicao ele volta com os valores padrao pra cada requicao;
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddMediatR(typeof(CreateProjectCommand)); // implementando o mediatr para usar o padrao CQRS no projeto - commands e queries;
-
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateProjectCommand).Assembly)); // implementando o mediatr para usar o padrao CQRS no projeto - commands e queries;
 
 var app = builder.Build();
 

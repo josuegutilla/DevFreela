@@ -9,6 +9,11 @@ namespace DevFreela.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<UserSkill> builder)
         {
             builder.ToTable("habilidade_usuario").HasKey(s => s.Id);
+
+            builder.HasOne(us => us.Skill)
+             .WithMany()
+             .HasForeignKey(us => us.IdSkill)
+             .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace DevFreela.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("usuario").HasKey(s => s.Id);
 
-            builder.HasMany(u => u.Skills).WithOne().HasForeignKey(u => u.IdSkill).OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(u => u.Skills).WithOne().HasForeignKey(us => us.IdUser).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

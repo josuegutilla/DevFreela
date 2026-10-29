@@ -14,7 +14,8 @@ namespace DevFreela.Application.ViewModels
             string clientFullName,
             string clientEmail,
             string? freelancerFullName,
-            string? freelancerEmail
+            string? freelancerEmail,
+            List<ProjectCommentViewModel> comments
             )
         {
             Title = title;
@@ -27,6 +28,7 @@ namespace DevFreela.Application.ViewModels
             ClientEmail = clientEmail;
             FreelancerFullname = freelancerFullName;
             FreelancerEmail = freelancerEmail;
+            Comments = comments;
         }
 
         public string Title { get; private set; }
@@ -39,5 +41,6 @@ namespace DevFreela.Application.ViewModels
         public string ClientEmail { get; private set; }
         public string? FreelancerFullname { get; private set; }
         public string? FreelancerEmail { get; private set; }
+        public List<ProjectCommentViewModel> Comments { get; private set; }
     }
 }
