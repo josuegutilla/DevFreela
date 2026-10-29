@@ -20,7 +20,7 @@ namespace DevFreela.Application.Queries.GetByIdUser
             if (user == null) return null;
 
             var skills = user.Skills
-                .Select(us => new SkillViewModel(us.Id, us.Skill.Description))
+                .Select(us => new SkillViewModel(us.IdSkill, us.Skill.Description))
                 .ToList();
 
             var userDetailsViewModel = new UserDetailsViewModel(

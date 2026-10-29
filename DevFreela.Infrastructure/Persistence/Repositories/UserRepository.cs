@@ -25,6 +25,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         {
             return await _dbContext.Users
                .AsNoTracking()
+               .Where(u => u.Active)
                .Include(u => u.Skills)
                .ThenInclude(us => us.Skill)
                .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
