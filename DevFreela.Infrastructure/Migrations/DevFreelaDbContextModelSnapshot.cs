@@ -22,7 +22,7 @@ namespace DevFreela.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +68,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("projeto", (string)null);
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.ProjectComment", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.ProjectComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +98,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("comentario_projeto", (string)null);
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.Skill", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.Skill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +123,7 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("habilidade", (string)null);
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.User", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,12 +148,20 @@ namespace DevFreela.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("usuario", (string)null);
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.UserSkill", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.UserSkill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,15 +184,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.ToTable("habilidade_usuario", (string)null);
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.Project", b =>
                 {
-                    b.HasOne("DevFreela.Core.Entities.User", "Client")
+                    b.HasOne("DevFreela.Domain.Entities.User", "Client")
                         .WithMany("OwnedProjects")
                         .HasForeignKey("IdClient")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.Core.Entities.User", "Freelancer")
+                    b.HasOne("DevFreela.Domain.Entities.User", "Freelancer")
                         .WithMany("FreelanceProjects")
                         .HasForeignKey("IdFreelancer")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -194,15 +202,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("Freelancer");
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.ProjectComment", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.ProjectComment", b =>
                 {
-                    b.HasOne("DevFreela.Core.Entities.Project", "Project")
+                    b.HasOne("DevFreela.Domain.Entities.Project", "Project")
                         .WithMany("Comments")
                         .HasForeignKey("IdProject")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.Core.Entities.User", "User")
+                    b.HasOne("DevFreela.Domain.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -213,15 +221,15 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.UserSkill", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.UserSkill", b =>
                 {
-                    b.HasOne("DevFreela.Core.Entities.Skill", "Skill")
+                    b.HasOne("DevFreela.Domain.Entities.Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("IdSkill")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("DevFreela.Core.Entities.User", null)
+                    b.HasOne("DevFreela.Domain.Entities.User", null)
                         .WithMany("Skills")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -230,12 +238,12 @@ namespace DevFreela.Infrastructure.Migrations
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.Project", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.Project", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("DevFreela.Core.Entities.User", b =>
+            modelBuilder.Entity("DevFreela.Domain.Entities.User", b =>
                 {
                     b.Navigation("Comments");
 

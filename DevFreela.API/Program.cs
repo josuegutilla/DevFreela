@@ -3,6 +3,8 @@ using DevFreela.Application.Behaviors;
 using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Domain.Repositories;
+using DevFreela.Domain.Services;
+using DevFreela.Infrastructure.Auth;
 using DevFreela.Infrastructure.Persistence;
 using DevFreela.Infrastructure.Persistence.Repositories;
 using FluentValidation;
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<DevFreelaDbContext>(options =>
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // registra TODOS os validators do projeto Application de uma vez
 builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
