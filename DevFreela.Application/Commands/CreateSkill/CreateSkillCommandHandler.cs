@@ -1,4 +1,4 @@
-﻿using DevFreela.Core.Entities;
+﻿using DevFreela.Domain.Entities;
 using DevFreela.Domain.Repositories;
 using MediatR;
 

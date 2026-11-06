@@ -1,4 +1,4 @@
-﻿using DevFreela.Core.Enums;
+﻿using DevFreela.Domain.Enums;
 
 namespace DevFreela.Domain.Entities
 {

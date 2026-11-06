@@ -1,4 +1,4 @@
-﻿using DevFreela.Core.Entities;
+﻿using DevFreela.Domain.Entities;
 
 namespace DevFreela.Application.ViewModels
 {

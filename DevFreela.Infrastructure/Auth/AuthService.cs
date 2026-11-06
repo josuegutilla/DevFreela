@@ -1,5 +1,4 @@
-﻿using DevFreela.Domain.Entities;
-using DevFreela.Domain.Services;
+﻿using DevFreela.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
