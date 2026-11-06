@@ -1,26 +1,25 @@
-﻿using DevFreela.Infrastructure.Persistence;
+﻿using DevFreela.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Commands.DeleteSkill
 {
     public class DeleteSkillCommandHandler : IRequestHandler<DeleteSkillCommand, bool>
     {
-        private readonly DevFreelaDbContext _dbContext;
+        private readonly ISkillRepository _skillRepository;
 
-        public DeleteSkillCommandHandler(DevFreelaDbContext dbContext)
+        public DeleteSkillCommandHandler(ISkillRepository repository)
         {
-            _dbContext = dbContext;
+            _skillRepository = repository;
         }
 
         public async Task<bool> Handle(DeleteSkillCommand request, CancellationToken cancellationToken)
         {
-            var skill = await _dbContext.Skills.SingleOrDefaultAsync(s => s.Id == request.Id && s.Active, cancellationToken);
+            var skill = await _skillRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (skill == null) return false;
 
             skill.Deactivate();
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _skillRepository.UpdateAsync(cancellationToken);
 
             return true;
         }

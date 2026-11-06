@@ -16,5 +16,7 @@
         public DateTime BirthDate { get; private set; }
         public bool Active { get; private set; }
         public List<SkillViewModel> Skills { get; private set; }
+        public List<ProjectViewModel> Projects { get; private set; }
+        public List<ProjectCommentViewModel> Comments { get; private set; }
     }
 }

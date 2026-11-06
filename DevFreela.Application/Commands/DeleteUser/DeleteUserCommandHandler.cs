@@ -1,26 +1,25 @@
-﻿using DevFreela.Infrastructure.Persistence;
+﻿using DevFreela.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Commands.DeleteUser
 {
     public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, bool>
     {
-        private readonly DevFreelaDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public DeleteUserCommandHandler(DevFreelaDbContext dbContext)
+        public DeleteUserCommandHandler(IUserRepository repository)
         {
-            _dbContext = dbContext;
+            _userRepository = repository;
         }
 
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
+            var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (user == null) return false;
 
             user.Cancel();
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _userRepository.UpdateAsync(cancellationToken);
 
             return true;
         }

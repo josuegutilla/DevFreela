@@ -13,7 +13,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Skill>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<Skill>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _dbContext.Skills
                 .AsNoTracking()
@@ -21,12 +21,22 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Skill?> GetById(int id, CancellationToken cancellationToken)
+        public async Task<Skill?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Skills
-                .AsNoTracking()
                 .Where(s => s.Active)
                 .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
+        }
+
+        public async Task AddAsync(Skill skill, CancellationToken cancellationToken)
+        {
+            await _dbContext.AddAsync(skill, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateAsync(CancellationToken cancellationToken)
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

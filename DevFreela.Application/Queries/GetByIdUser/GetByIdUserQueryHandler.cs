@@ -15,7 +15,7 @@ namespace DevFreela.Application.Queries.GetByIdUser
 
         public async Task<UserDetailsViewModel?> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetById(request.Id, cancellationToken);
+            var user = await _userRepository.GetDetailsByIdAsync(request.Id, cancellationToken);
 
             if (user == null) return null;
 

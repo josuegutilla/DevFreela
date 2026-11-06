@@ -15,7 +15,7 @@ namespace DevFreela.Application.Queries.GetAllSkill
 
         public async Task<List<SkillViewModel>> Handle(GetAllSkillQuery request, CancellationToken cancellationToken)
         {
-            var skills = await _skillRepository.GetAll(cancellationToken);
+            var skills = await _skillRepository.GetAllAsync(cancellationToken);
             var SkillsViewModel = skills.Select(s => new SkillViewModel(s.Id, s.Description)).ToList();
 
             return SkillsViewModel;

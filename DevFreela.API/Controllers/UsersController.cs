@@ -21,6 +21,7 @@ namespace DevFreela.API.Controllers
 
         // GET: api/users
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var users = await _mediator.Send(new GetAllUserQuery());
@@ -28,6 +29,8 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             var user = await _mediator.Send(new GetByIdUserQuery { Id = id});
@@ -38,6 +41,8 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(HttpValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
             var userId = await _mediator.Send(command);
@@ -46,6 +51,8 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(HttpValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateUserCommand command)
         {
             command.Id = id;
@@ -58,6 +65,8 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(HttpValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _mediator.Send(new DeleteUserCommand { Id = id});

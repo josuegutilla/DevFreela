@@ -13,14 +13,23 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = context;   
         }
 
-        public async Task<List<Project>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<Project>> GetAllAsync(string? query, CancellationToken cancellationToken)
         {
-            return await _dbContext.Projects
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            var projects = _dbContext.Projects.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                projects = projects.Where(p => p.Title.Contains(query) || p.Description.Contains(query));
+
+            return await projects.ToListAsync(cancellationToken);
         }
 
-        public async Task<Project?> GetById(int id, CancellationToken cancellationToken)
+        public async Task<Project?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Projects
+                .SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+
+        public async Task<Project?> GetDetailsByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Projects
                 .AsNoTracking()
@@ -29,6 +38,28 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
                 .Include(p => p.Client)
                 .Include(p => p.Freelancer)
                 .SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+
+        public async Task AddAsync(Project project, CancellationToken cancellationToken)
+        {
+            await _dbContext.AddAsync(project, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateAsync(CancellationToken cancellationToken)
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task AddCommentAsync(ProjectComment projectComment, CancellationToken cancellationToken)
+        {
+            await _dbContext.ProjectComments.AddAsync(projectComment, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Projects.AnyAsync(p => p.Id == id, cancellationToken);
         }
     }
 }

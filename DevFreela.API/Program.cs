@@ -1,7 +1,11 @@
+using DevFreela.API.ExceptionHandlers;
+using DevFreela.Application.Behaviors;
 using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Domain.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using DevFreela.Infrastructure.Persistence.Repositories;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,9 +26,21 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateProjectCommand).Assembly)); // implementando o mediatr para usar o padrao CQRS no projeto - commands e queries;
+// registra TODOS os validators do projeto Application de uma vez
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CreateProjectCommand).Assembly); // implementando o mediatr para usar o padrao CQRS no projeto - commands e queries;
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>)); // liga a validação no pipeline
+});
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -15,7 +15,7 @@ namespace DevFreela.Application.Queries.GetAllUser
 
         public async Task<List<UserViewModel>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAll(cancellationToken);
+            var users = await _userRepository.GetAllAsync(cancellationToken);
                 
             var usersViewModel = users
                 .Select(u => new UserViewModel(u.Id, u.FullName, u.Email, u.Active))

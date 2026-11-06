@@ -15,7 +15,7 @@ namespace DevFreela.Application.Queries.GetByIdSkill
 
         public async Task<SkillViewModel?> Handle(GetByIdSkillQuery request, CancellationToken cancellationToken)
         {
-            var skill = await _skillRepository.GetById(request.Id, cancellationToken);
+            var skill = await _skillRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (skill == null ) return null;
 
