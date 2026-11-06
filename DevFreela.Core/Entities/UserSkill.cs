@@ -1,4 +1,4 @@
-﻿namespace DevFreela.Core.Entities
+﻿namespace DevFreela.Domain.Entities
 {
     public class UserSkill : BaseEntity
     {

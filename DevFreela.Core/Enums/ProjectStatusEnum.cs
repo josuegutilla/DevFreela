@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DevFreela.Core.Enums
+﻿namespace DevFreela.Domain.Enums
 {
     public enum ProjectStatusEnum
     {

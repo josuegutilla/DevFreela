@@ -1,4 +1,4 @@
-﻿namespace DevFreela.Core.Entities
+﻿namespace DevFreela.Domain.Entities
 {
     // classe abstrata: não pode ser instanciada, mas pode ser herdada
     public abstract class BaseEntity
