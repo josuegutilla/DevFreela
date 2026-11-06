@@ -46,12 +46,6 @@ namespace DevFreela.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
         {
-            // mais para frente, validar com o fluentValidation
-            if (string.IsNullOrWhiteSpace(command.Title) || command.Title.Length <= 5)
-            {
-                return BadRequest();
-            }
-
             var projectId = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetById), new { id = projectId }, command);
