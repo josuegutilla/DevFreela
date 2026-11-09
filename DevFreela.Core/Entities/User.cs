@@ -30,6 +30,11 @@
         public string Password { get; private set; }
         public string Role { get; private set; }
 
+        public void Activate()
+        {
+            Active = true;
+        }
+
         public void Cancel()
         {
             Active = false;

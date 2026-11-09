@@ -1,9 +1,10 @@
-﻿using DevFreela.Domain.Repositories;
+﻿using DevFreela.Domain.Enums;
+using DevFreela.Domain.Repositories;
 using MediatR;
 
 namespace DevFreela.Application.Commands.UpdateProject
 {
-    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, bool>
+    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, ProjectCommandResult>
     {
         private readonly IProjectRepository _projectRepository;
 
@@ -12,16 +13,18 @@ namespace DevFreela.Application.Commands.UpdateProject
             _projectRepository = repository;
         }
 
-        public async Task<bool> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<ProjectCommandResult> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await _projectRepository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (project == null) return false;
+            if (project == null) return ProjectCommandResult.NotFound;
+
+            if (project.IdClient != request.IdUser) return ProjectCommandResult.Forbidden;
 
             project.Update(request.Title, request.Description, request.TotalCost);
             await _projectRepository.UpdateAsync(cancellationToken);
 
-            return true;
+            return ProjectCommandResult.Success;
         }
     }
 }

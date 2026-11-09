@@ -158,6 +158,9 @@ namespace DevFreela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("usuario", (string)null);
                 });
 

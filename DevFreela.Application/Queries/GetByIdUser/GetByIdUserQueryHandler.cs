@@ -23,12 +23,19 @@ namespace DevFreela.Application.Queries.GetByIdUser
                 .Select(us => new SkillViewModel(us.IdSkill, us.Skill.Description))
                 .ToList();
 
+            var projects = user.OwnedProjects.Select(p => new ProjectViewModel(p.Title, p.Description, p.TotalCost, p.Status)).ToList();
+
+            var comments = user.Comments.Select(c => new ProjectCommentViewModel(c.IdProject, c.Content, c.IdUser, c.User.FullName, c.CreatedAt)).ToList();
+
             var userDetailsViewModel = new UserDetailsViewModel(
                 user.FullName,
                 user.Email,
                 user.BirthDate,
                 user.Active,
-                skills
+                user.Role,
+                skills,
+                projects,
+                comments
             );
 
             return userDetailsViewModel;

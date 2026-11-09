@@ -17,7 +17,7 @@ namespace DevFreela.Application.Commands.CreateComment
         {
             var projectExists = await _projectRepository.ExistsAsync(request.IdProject, cancellationToken);
 
-            if (projectExists) return false;
+            if (!projectExists) return false;
 
             var comment = new ProjectComment(
                 request.Content,

@@ -14,7 +14,7 @@ namespace DevFreela.Application.Commands.DeleteUser
 
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
+            var user = await _userRepository.GetActiveByIdAsync(request.Id, cancellationToken);
 
             if (user == null) return false;
 

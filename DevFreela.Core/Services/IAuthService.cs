@@ -4,6 +4,8 @@ namespace DevFreela.Domain.Services
 {
     public interface IAuthService
     {
-        string GenerateJwtToken(string email, string role);
+        string HashPassword(string password);
+        bool VerifyPassword(string password, string hash);
+        string GenerateJwtToken(User user);
     }
 }

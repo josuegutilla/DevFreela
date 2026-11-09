@@ -13,7 +13,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<List<User>> GetAllActiveAsync(CancellationToken cancellationToken)
         {
             return await _dbContext.Users
                 .AsNoTracking()
@@ -21,11 +21,19 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        // metodo byId para os commands. sem asnotracking e sem include
-        public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        // para os commands: só usuários ativos, sem AsNoTracking e sem Include
+        public async Task<User?> GetActiveByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Users
                .Where(u => u.Active)
+               .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+        }
+
+        // qualquer usuário, ativo ou desativado (ex.: reativar conta, histórico)
+        public async Task<User?> GetByIdInactiveAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+               .Where(u => u.Active == false)
                .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
         }
 
@@ -51,6 +59,17 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         public async Task UpdateAsync(CancellationToken cancellationToken)
         {
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<User?> GetByEmailIncludingInactiveAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users
+                .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
+
+        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
     }
 }

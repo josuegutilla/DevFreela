@@ -42,7 +42,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
 
         public async Task AddAsync(Project project, CancellationToken cancellationToken)
         {
-            await _dbContext.AddAsync(project, cancellationToken);
+            await _dbContext.Projects.AddAsync(project, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
